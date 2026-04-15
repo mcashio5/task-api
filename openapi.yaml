@@ -1,0 +1,85 @@
+openapi: 3.0.3
+info:
+  title: Task API
+  version: 1.0.0
+  description: API documentation for tasks
+
+servers:
+  - url: http://localhost:3000
+
+tags:
+  - name: Tasks
+    description: Task-related operations
+
+paths:
+  /tasks:
+    get:
+      tags:
+        - Tasks
+      summary: Get all tasks
+      description: Retrieve tasks, optionally filtered by completion status.
+      parameters:
+        - in: query
+          name: completed
+          required: false
+          schema:
+            type: string
+            enum: [true, false]
+          description: |
+            Filter tasks by completion status:
+            - true → only completed tasks
+            - false → only incomplete tasks
+      responses:
+        '200':
+          description: A list of tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+              example:
+                - id: 1
+                  title: Finish assignment
+                  description: Complete Assignment 10
+                  completed: false
+                - id: 2
+                  title: Submit work
+                  description: Upload submission.txt
+                  completed: true
+        '400':
+          description: Invalid completed query parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorsArray'
+              example:
+                errors:
+                  - completed must be true or false
+
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: Finish assignment
+        description:
+          type: string
+          nullable: true
+          example: Complete Assignment 10
+        completed:
+          type: boolean
+          example: false
+
+    ErrorsArray:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
