@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'test') {
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/users', userRoutes);
-app.use('/tasks', taskRoutes);
+app.use('/api/tasks', taskRoutes);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
